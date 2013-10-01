@@ -16,6 +16,7 @@
     "datejs": "0.0.2"
   },
   "devDependencies": {
-    "grunt": "~0.4.1"
+    "grunt": "~0.4.1",
+    "grunt-contrib-coffee": "~0.7.0"
   }
 }

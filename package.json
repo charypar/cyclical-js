@@ -2,9 +2,9 @@
   "name": "cyclical",
   "version": "0.0.1",
   "description": "Recurring events library for calendar applications",
-  "main": "index.js",
+  "main": "cyclical.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",
@@ -13,10 +13,13 @@
   "author": "Viktor Charypar <charypar@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "underscore": "~1.5.2",
     "datejs": "0.0.2"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
-    "grunt-contrib-coffee": "~0.7.0"
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-jasmine": "~0.5.2",
+    "grunt-contrib-concat": "~0.3.0"
   }
 }

@@ -7,7 +7,7 @@ module.exports = function(grunt) {
     coffee: {
       compile: {
         files: {
-          'build/cyclical.js': [
+          'build/<%= pkg.name %>.js': [
             'lib/date_from_json.js.coffee',
             'lib/schedule.js.coffee',
             'lib/schedule/rule.js.coffee',
@@ -16,7 +16,30 @@ module.exports = function(grunt) {
             'lib/schedule/suboccurrence.js.coffee',
             'lib/schedule/occurrence.js.coffee'
           ],
-          'build/cyclical_specs.js': 'test/schedule_spec.js.coffee'
+          'build/specs.js': 'test/schedule_spec.js.coffee'
+        }
+      }
+    },
+
+    copy: {
+      dist: {
+        files: [
+          {
+            src: 'build/<%= pkg.name %>.js',
+            dest: '<%= pkg.name %>.js'
+          },
+          {
+            src: 'build/<%= pkg.name %>.js',
+            dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.js'
+          }
+        ]
+      }
+    },
+
+    uglify: {
+      dist: {
+        files: {
+          'dist/<%= pkg.name %>.<%= pkg.version %>.min.js': ['dist/<%= pkg.name %>.<%= pkg.version %>.js']
         }
       }
     },
@@ -26,17 +49,20 @@ module.exports = function(grunt) {
         'node_modules/datejs/lib/date.js',
         'node_modules/moment/moment.js',
         'node_modules/underscore/underscore-min.js',
-        'build/cyclical.js',
+        'build/<%= pkg.name %>.js',
       ],
       options: {
-        specs: 'build/cyclical_specs.js'
+        specs: 'build/specs.js'
       }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-coffee');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
 
   grunt.registerTask('default', ['coffee']);
   grunt.registerTask('test', ['default', 'jasmine']);
+  grunt.registerTask('dist', ['default', 'copy', 'uglify']);
 };

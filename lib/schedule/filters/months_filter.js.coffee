@@ -1,11 +1,11 @@
 class Schedule.Filters.MonthsFilter
-  
+
   MONTH_NAMES: {
     jan: 1, january: 1,
     feb: 2, february: 2,
     mar: 3, march: 3,
     apr: 4, april: 4,
-    may: 5, 
+    may: 5,
     jun: 6, june: 6,
     jul: 7, july: 7,
     aug: 8, august: 8,
@@ -33,7 +33,7 @@ class Schedule.Filters.MonthsFilter
     month = null
     for m in @months
       month = m if (m > date.getMonth() + 1)
-    
+
     if month?
       (new Date(date)).set(month: 0, day: 1).add(month - 1).months().at(hour: date.getHours(), minute: date.getMinutes(), second: date.getSeconds())
     else
@@ -53,13 +53,13 @@ class Schedule.Filters.MonthsFilter
     else
       d = (new Date(date)).set(month: 0, day: 1).add(-1).year().add(@months.last).months().add(-1).day()
       d.at(hour: date.getHours(), minute: date.getMinutes(), second: date.getSeconds())
-      
+
   toString: =>
     monthNames = [null, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    
+
     months = _.map @months, (m) -> monthNames[m]
     last = months.pop()
-    
+
     if months.length > 0
       "in #{months.join(", ")} and #{last}"
     else

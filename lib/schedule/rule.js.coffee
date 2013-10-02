@@ -1,21 +1,16 @@
-#= require schedule/filters/months_filter
-#= require schedule/filters/weekdays_filter
-#= require schedule/filters/monthdays_filter
-#= require schedule/filters/yeardays_filter
-
 # Rules describe the basic recurrence patterns (frequency and interval) and hold the set of rules (called filters)
 # that a candidate date must match to be included into the recurrence set.
 # Rules can align a date to a closest date (in the past or in the future) matching all the filters with respect to
-# selected start date of the recurrence. 
+# selected start date of the recurrence.
 class Schedule.Rule
   constructor: (interval = 1) ->
     @interval = interval
-    
+
     @_filters = []
     @_filterMap = {}
 
   # rule specification DSL
-    
+
   count: (n) =>
     return @_count unless n
 
@@ -36,7 +31,7 @@ class Schedule.Rule
     @_filterMap.months = f
 
     this
-  
+
   month: (months...) =>
     @months(months...)
 
@@ -61,7 +56,7 @@ class Schedule.Rule
     @_filterMap.monthdays = f
 
     this
-  
+
   monthday: (monthdays...) =>
     @monthdays(monthdays...)
 
@@ -90,12 +85,12 @@ class Schedule.Rule
 
   isInfinite: =>
     !@isFinite()
-    
+
   # returns true if time is aligned to the recurrence pattern and matches all the filters
   match: (time, base) =>
     for filter in @_filters
       return false unless filter.match(time)
-      
+
     return @aligned(time, base)
 
   # get next date matching the rule (not checking limits). Returns next occurrence even if +time+ matches the rule.
@@ -103,10 +98,10 @@ class Schedule.Rule
     current = new Date(time)
     minStep = @_minStep()
     MAX_ITERATIONS = 1000
-    
+
     until @match(current, base) && current > time
       throw "Maximum iterations reached when getting next rule occurrence..." unless MAX_ITERATIONS-- > 0
-      
+
       potNext = @_align(@_potentialNext(current, base), base)
       potNext.add(minStep.length)[minStep.unit]() if Date.equals(potNext, current)
       current = potNext
@@ -119,9 +114,9 @@ class Schedule.Rule
     minStep = @_minStep()
     MAX_ITERATIONS = 1000
 
-    until @match(current, base) && current < time 
+    until @match(current, base) && current < time
       throw "Maximum iterations reached when getting previous occurrence..." unless MAX_ITERATIONS-- > 0
-      
+
       potNext = @_align(@_potentialPrevious(current, base), base)
       potNext.add(-minStep.length)[minStep.unit]() if Date.equals(potNext, current)
 
@@ -142,10 +137,10 @@ class Schedule.Rule
 
   toObject: =>
     object = {freq: @freq(), interval: @interval}
-    
+
     object.count = @count() if @count()?
     object.stop = @stop() if @stop()?
-        
+
     object.weekdays = @filters('weekdays').weekdays.concat(@filters('weekdays').orderedWeekdays) if @filters('weekdays')?
     object.monthdays = @filters('monthdays').monthdays if @filters('monthdays')?
     object.yeardays = @filters('yeardays').yeardays if @filters('yeardays')?
@@ -159,20 +154,20 @@ class Schedule.Rule
   toString: =>
     dayNames = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
     monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    
+
     strings = []
-    
+
     strings.push @filters('months').toString() if @filters('months')
     strings.push @filters('weekdays').toString() if @filters('weekdays')
     strings.push @filters('monthdays').toString() if @filters('monthdays')
     strings.push @filters('yeardays').toString() if @filters('yeardays')
-    
+
     strings.push "end after #{@count()} times" if @count()
-    
+
     strings.push "until #{monthNames[@stop().getMonth()]} #{@stop().getDate()}, #{@stop().getFullYear()}" if @stop()
 
     strings.join(", ")
-    
+
   # protected api
 
   # Next comes the heart of all the calculations
@@ -186,31 +181,31 @@ class Schedule.Rule
 
   # Find a potential previous date matching the rule as a minimum of previous
   # valid dates from all the filters. Subclasses should add a check of
-  # recurrence pattern match 
+  # recurrence pattern match
   _potentialPrevious: (current, base) =>
     fNext = (filter.previous(current) for filter in @filters())
     if fNext.length > 0 then new Date(Math.max(fNext...)) else current
 
-  # Should return a time aligned to the base in the rule interval resolution, e.g.: 
+  # Should return a time aligned to the base in the rule interval resolution, e.g.:
   # - in a daily rule a time on the same day with a correct hour, minute and second
-  # - in a weekly rule a time in the same week with a correct weekday, hour, minute and second 
+  # - in a weekly rule a time in the same week with a correct weekday, hour, minute and second
   _align: (time, base) ->
     throw "#{typeof this}.align should be overriden and return a time in the period of time parameter, aligned to base"
-  
-  # Minimal step of all the filters and the recurrence rule. This allows the 
-  # next/previous calculation to move a sane amount of time forward when all 
-  # the filters and the rule match but the candidate is before/after the 
+
+  # Minimal step of all the filters and the recurrence rule. This allows the
+  # next/previous calculation to move a sane amount of time forward when all
+  # the filters and the rule match but the candidate is before/after the
   # requested time (which is caused by date alignment)
   _minStep: =>
     return @__minStep if @__minStep?
-    
+
     steps = (filter.step() for filter in @filters())
     steps.push(@step())
 
     @__minStep = steps[0]
     for i in [1...steps.length]
       @__minStep = steps[i] if steps[i].seconds < @__minStep.seconds
-      
+
     @__minStep
 
 

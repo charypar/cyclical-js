@@ -1,5 +1,3 @@
-#= require schedule/suboccurrence
-
 # Holds an occurence of a recurrence rule, can compute next and previous and list occurrences
 class Schedule.Occurrence
 
@@ -33,7 +31,7 @@ class Schedule.Occurrence
 
     time = (if t1 <= @startTime then @startTime else t1)
     time = @rule.next(time, @startTime) unless @rule.match(time, @startTime)
-    
+
     @_listOccurrences(time, (t) -> t < t2)
 
   suboccurrencesBetween: (t1, t2) =>
@@ -51,24 +49,24 @@ class Schedule.Occurrence
   toObject: =>
     @rule.toObject()
 
-  # yields valid occurrences, return false from the block to stop 
+  # yields valid occurrences, return false from the block to stop
   _listOccurrences: (from, direction_or_func, func) =>
     throw "From #{from} not matching the rule #{@rule} and start time #{@startTime}" unless @rule.match(from, @startTime)
-    
+
     if func?
       direction = direction_or_func
     else
       direction = 'forward'
       func = direction_or_func
-    
+
     results = []
 
     [n, current] = @_initLoop(from, direction)
     MAX_ITERATIONS = 10000
-    
+
     loop
       throw "Maximum iterations reached when listing occurrences..." unless MAX_ITERATIONS-- > 0
-      
+
       # break on schedule span limits
       return results unless (current >= @startTime) && (!@rule.stop()? || current < @rule.stop()) && (!@rule.count()? || (n -= 1) >= 0)
 
@@ -86,7 +84,7 @@ class Schedule.Occurrence
   _initLoop: (from, direction) =>
     return [0, from] unless @rule.count()? # without count limit, life is easy
 
-    # with it, it's... well...  
+    # with it, it's... well...
     if direction == 'forward'
       n = 0
       current = @startTime

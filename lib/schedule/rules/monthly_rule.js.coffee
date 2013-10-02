@@ -1,6 +1,6 @@
 class Schedule.Rules.MonthlyRule extends Schedule.Rule
 
-  # check if time is aligned to a base time, including interval check  
+  # check if time is aligned to a base time, including interval check
   aligned: (time, base) =>
     return false unless ((12 * base.getFullYear() + base.getMonth()) - (12 * time.getFullYear() + time.getMonth())) % @interval == 0
     return false unless time.getHours() == base.getHours() && time.getMinutes() == base.getMinutes() && time.getSeconds() == base.getSeconds()
@@ -28,7 +28,7 @@ class Schedule.Rules.MonthlyRule extends Schedule.Rule
 
     rem = ((12 * base.getFullYear() + base.getMonth()) - (12 * candidate.getFullYear() + candidate.getMonth())) % @interval
     return candidate if rem == 0
-    
+
     rem += @interval if rem < 0
     (new Date(candidate)).add(rem).months().set(day: 1).at(hour: 0, minute: 0, second: 0)
 

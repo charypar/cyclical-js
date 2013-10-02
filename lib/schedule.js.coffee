@@ -1,13 +1,3 @@
-#= require_self
-#= require schedule/rule
-
-#= require schedule/rules/daily_rule
-#= require schedule/rules/weekly_rule
-#= require schedule/rules/monthly_rule
-#= require schedule/rules/yearly_rule
-
-#= require schedule/occurrence
-
 class window.Schedule
 
   constructor: (startTime, rule) ->

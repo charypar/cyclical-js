@@ -8,7 +8,7 @@ class Schedule.Suboccurrence
     @isOccurrenceEnd = attrs.isOccurrenceEnd
 
 # factory method for finding suboccurrence of a single occurrence with an interval, with the ability to return nil
-# This might be a totally bad idea, I'm not sure right now really... 
+# This might be a totally bad idea, I'm not sure right now really...
 Schedule.Suboccurrence.find = (attrs) ->
   throw "Missing occurrence" unless (occurrence = attrs.occurrence).length?
   throw "Missing interval" unless (interval = attrs.interval).length?
@@ -30,5 +30,5 @@ Schedule.Suboccurrence.find = (attrs) ->
   else
     suboccurrence.end = occurrence[1]
     suboccurrence.isOccurrenceEnd = true
-    
+
   new Schedule.Suboccurrence(suboccurrence)

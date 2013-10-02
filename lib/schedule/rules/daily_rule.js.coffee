@@ -6,7 +6,7 @@ class Schedule.Rules.DailyRule extends Schedule.Rule
     return false unless time.getHours() == base.getHours() && time.getMinutes() == base.getMinutes() && time.getSeconds() == base.getSeconds()
 
     true
-    
+
   freq: =>
     'daily'
 
@@ -17,12 +17,12 @@ class Schedule.Rules.DailyRule extends Schedule.Rule
     sup = super()
     string = if @interval > 1 then "Every #{@interval} days" else "Daily"
     string += ", #{sup}" if sup
-    
+
     string
 
   _potentialNext: (current, base) =>
     candidate = super(current, base)
-    
+
     rem = ((new Date(base)).at(hour: 0, minute: 0, second: 0) - (new Date(candidate)).at(hour: 0, minute: 0, second: 0)) % @interval
 
     return candidate if rem == 0
@@ -39,5 +39,5 @@ class Schedule.Rules.DailyRule extends Schedule.Rule
     (new Date(candidate)).add(rem - @interval).days().at(hour: 0, minute: 0)
 
   _align: (time, base) =>
-    time = (new Date(time)).at(hour: 0, minute: 0, second: 0).add(hours: base.getHours(), minutes: base.getMinutes(), seconds: base.getSeconds()) 
-   
+    time = (new Date(time)).at(hour: 0, minute: 0, second: 0).add(hours: base.getHours(), minutes: base.getMinutes(), seconds: base.getSeconds())
+

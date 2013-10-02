@@ -1,6 +1,6 @@
 class Schedule.Rules.YearlyRule extends Schedule.Rule
 
-  # check if time is aligned to a base time, including interval check  
+  # check if time is aligned to a base time, including interval check
   aligned: (time, base) =>
     return false unless (base.getFullYear() - time.getFullYear()) % @interval == 0
     return false unless time.getHours() == base.getHours() && time.getMinutes() == base.getMinutes() && time.getSeconds() == base.getSeconds()
@@ -29,10 +29,10 @@ class Schedule.Rules.YearlyRule extends Schedule.Rule
   _potentialNext: (current, base) =>
     candidate = super(current, base)
     return candidate if (base.getFullYear() - candidate.getFullYear()) % @interval == 0
-    
+
     years = ((base.getFullYear() - candidate.getFullYear()) % @interval)
     years += @interval if years < 0
-    
+
     (new Date(candidate)).add(years).years().set(month: 0, day: 1)
 
   _potentialPrevious: (current, base) =>
@@ -48,10 +48,10 @@ class Schedule.Rules.YearlyRule extends Schedule.Rule
     day = (if @_dayFilters() then time.getDate() else base.getDate())
     mon = (if @_monthFilters() then time.getMonth() else base.getMonth())
 
-    time = (new Date(time)).set(month: 0, day: 1).add(mon).months().add(day - 1).days() 
+    time = (new Date(time)).set(month: 0, day: 1).add(mon).months().add(day - 1).days()
 
-    time.at(hour: 0, minute: 0, second: 0).add(hours: base.getHours(), minutes: base.getMinutes(), seconds: base.getSeconds()) 
-    
+    time.at(hour: 0, minute: 0, second: 0).add(hours: base.getHours(), minutes: base.getMinutes(), seconds: base.getSeconds())
+
   _dayFilters: =>
     @filters('weekdays')? || @filters('monthdays')? || @filters('yeardays')?
 

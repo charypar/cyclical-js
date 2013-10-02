@@ -1,6 +1,6 @@
 {
   "name": "cyclical",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Recurring events library for calendar applications",
   "main": "cyclical.js",
   "scripts": {

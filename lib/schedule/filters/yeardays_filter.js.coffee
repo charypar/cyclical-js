@@ -37,7 +37,7 @@ class Schedule.Filters.YeardaysFilter
     Math.ceil((date - janFirst) / 86400000) + 1
 
   toString: =>
-    days = _.map @yeardays, (d) -> "#{d}."
+    days = @yeardays.map (d) -> "#{d}."
     last = days.pop()
 
     if days.length > 0

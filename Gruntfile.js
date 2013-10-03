@@ -48,7 +48,6 @@ module.exports = function(grunt) {
       src: [
         'node_modules/datejs/lib/date.js',
         'node_modules/moment/moment.js',
-        'node_modules/underscore/underscore-min.js',
         'build/<%= pkg.name %>.js',
       ],
       options: {

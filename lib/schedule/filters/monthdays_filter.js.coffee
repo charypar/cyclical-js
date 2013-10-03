@@ -28,7 +28,7 @@ class Schedule.Filters.MonthdaysFilter
     date
 
   toString: =>
-    days = _.map @monthdays, (d) -> "#{d}."
+    days = @monthdays.map (d) -> "#{d}."
     last = days.pop()
 
     if days.length > 0

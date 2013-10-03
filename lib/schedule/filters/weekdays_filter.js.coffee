@@ -89,10 +89,10 @@ class Schedule.Filters.WeekdaysFilter
   toString: =>
     dayNames = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
 
-    wdays = _.map @weekdays, (w) -> dayNames[w]
+    wdays = @weekdays.map (w) -> dayNames[w]
 
-    owdays = _.map @orderedWeekdays, (ord, d) =>
-      "#{_.map(ord, (o) -> "#{o}.").join(", ")} #{dayNames[@WEEKDAYS[d]]}"
+    owdays = for d, ord of @orderedWeekdays
+      "#{ord.map((o) -> "#{o}.").join(", ")} #{dayNames[@WEEKDAYS[d]]}"
 
     days = wdays.concat(owdays)
     last = days.pop()

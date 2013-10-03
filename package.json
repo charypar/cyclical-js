@@ -13,7 +13,6 @@
   "author": "Viktor Charypar <charypar@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "underscore": "~1.5.2",
     "datejs": "0.0.2"
   },
   "devDependencies": {

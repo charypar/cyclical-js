@@ -57,7 +57,7 @@ class Schedule.Filters.MonthsFilter
   toString: =>
     monthNames = [null, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
-    months = _.map @months, (m) -> monthNames[m]
+    months = @months.map (m) -> monthNames[m]
     last = months.pop()
 
     if months.length > 0

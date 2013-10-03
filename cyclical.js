@@ -1168,7 +1168,7 @@
 
     MonthdaysFilter.prototype.toString = function() {
       var days, last;
-      days = _.map(this.monthdays, function(d) {
+      days = this.monthdays.map(function(d) {
         return "" + d + ".";
       });
       last = days.pop();
@@ -1325,7 +1325,7 @@
     MonthsFilter.prototype.toString = function() {
       var last, monthNames, months;
       monthNames = [null, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      months = _.map(this.months, function(m) {
+      months = this.months.map(function(m) {
         return monthNames[m];
       });
       last = months.pop();
@@ -1494,17 +1494,23 @@
     };
 
     WeekdaysFilter.prototype.toString = function() {
-      var dayNames, days, last, owdays, wdays,
-        _this = this;
+      var d, dayNames, days, last, ord, owdays, wdays;
       dayNames = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-      wdays = _.map(this.weekdays, function(w) {
+      wdays = this.weekdays.map(function(w) {
         return dayNames[w];
       });
-      owdays = _.map(this.orderedWeekdays, function(ord, d) {
-        return "" + (_.map(ord, function(o) {
-          return "" + o + ".";
-        }).join(", ")) + " " + dayNames[_this.WEEKDAYS[d]];
-      });
+      owdays = (function() {
+        var _ref, _results;
+        _ref = this.orderedWeekdays;
+        _results = [];
+        for (d in _ref) {
+          ord = _ref[d];
+          _results.push("" + (ord.map(function(o) {
+            return "" + o + ".";
+          }).join(", ")) + " " + dayNames[this.WEEKDAYS[d]]);
+        }
+        return _results;
+      }).call(this);
       days = wdays.concat(owdays);
       last = days.pop();
       if (days.length > 0) {
@@ -1586,7 +1592,7 @@
 
     YeardaysFilter.prototype.toString = function() {
       var days, last;
-      days = _.map(this.yeardays, function(d) {
+      days = this.yeardays.map(function(d) {
         return "" + d + ".";
       });
       last = days.pop();

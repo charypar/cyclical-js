@@ -22,12 +22,16 @@ module.exports = function(grunt) {
     },
 
     copy: {
-      dist: {
+      compile: {
         files: [
           {
             src: 'build/<%= pkg.name %>.js',
             dest: '<%= pkg.name %>.js'
-          },
+          }
+        ]
+      },
+      dist: {
+        files: [
           {
             src: 'build/<%= pkg.name %>.js',
             dest: 'dist/<%= pkg.name %>.<%= pkg.version %>.js'
@@ -61,7 +65,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
 
-  grunt.registerTask('default', ['coffee']);
+  grunt.registerTask('default', ['coffee', 'copy:compile']);
   grunt.registerTask('test', ['default', 'jasmine']);
   grunt.registerTask('dist', ['default', 'copy', 'uglify']);
 };
